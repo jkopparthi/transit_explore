@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  street: one
+  cross_street: one
+  stop_number: 1
+  name: MyString
+  direction: MyString
+  side: MyString
+  latitude: 9.99
+  longitude: 9.99
+  departures_per_day: 1
+  has_shelter: false
+  has_bench: false
+
+two:
+  street: two
+  cross_street: two
+  stop_number: 1
+  name: MyString
+  direction: MyString
+  side: MyString
+  latitude: 9.99
+  longitude: 9.99
+  departures_per_day: 1
+  has_shelter: false
+  has_bench: false
