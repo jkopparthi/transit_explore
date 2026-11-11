@@ -1,0 +1,40 @@
+<h1 class="h3 mb-3">Bus Stops</h1>
+
+<%= form_with url: stops_path, method: :get, class: "row g-2 mb-4" do |f| %>
+  <div class="col-md-8">
+    <%= f.text_field :q, value: @query, class: "form-control", placeholder: "Search stops by name, e.g. Osborne", "aria-label": "Search stops" %>
+  </div>
+  <div class="col-auto">
+    <%= f.submit "Search", name: nil, class: "btn btn-primary" %>
+    <%= link_to "Clear", stops_path, class: "btn btn-outline-secondary" if @query.present? %>
+  </div>
+<% end %>
+
+<% if @stops.empty? %>
+  <div class="alert alert-warning">
+    No stops found<% if @query.present? %> matching "<%= @query %>"<% end %>.
+  </div>
+<% else %>
+  <p class="text-muted"><%= page_entries_info @stops %></p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Stop #</th>
+        <th scope="col">Name</th>
+        <th scope="col">Street</th>
+        <th scope="col">Routes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stops.each do |stop| %>
+        <tr>
+          <td><%= stop.stop_number %></td>
+          <td><%= link_to stop.name, stop %></td>
+          <td><%= link_to stop.street.name, stop.street %></td>
+          <td><%= stop.routes.size %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @stops %>
+<% end %>
