@@ -1,0 +1,65 @@
+<h1 class="h3 mb-3">About Transit Explorer</h1>
+
+<p>
+  Transit Explorer is a Ruby on Rails app for exploring Winnipeg Transit stops and routes.
+  Existing transit apps tell you when the next bus arrives. This app is about the stops
+  themselves: which routes serve them, which streets they are on, and whether they have
+  a shelter.
+</p>
+
+<h2 class="h5 mt-4">Data sources</h2>
+<p>
+  All data comes from the <a href="https://api.winnipegtransit.com">Winnipeg Transit API</a> (v4),
+  requested as JSON. Three separate endpoints are used:
+</p>
+<ul>
+  <li><strong>routes</strong> (<code>routes.json</code>): every route's number and name.</li>
+  <li><strong>stops</strong> (<code>stops.json?route=N</code>): the stops on each loaded route, with
+    name, direction, side, street, cross street and latitude/longitude.</li>
+  <li><strong>stop features</strong> (<code>stops/{number}/features.json</code>): the features at each stop,
+    such as shelters and benches.</li>
+</ul>
+<p>
+  <code>db/seeds.rb</code> loads routes, streets, stops and the route-to-stop links, and the rake task
+  <code>rails transit:features</code> fills in the shelter and bench flags. The API's own IDs are kept in
+  separate columns (<code>transit_id</code>, <code>stop_number</code>, <code>route_number</code>), and
+  Rails creates its own primary and foreign keys.
+</p>
+<p>
+  Currently loaded:
+  <strong><%= Stop.count %></strong> stops,
+  <strong><%= Street.count %></strong> streets,
+  <strong><%= Route.count %></strong> routes and
+  <strong><%= RouteStop.count %></strong> route-stop links.
+</p>
+
+<h2 class="h5 mt-4">Database tables</h2>
+<ul>
+  <li><strong>streets</strong>: <code>transit_id</code>, <code>name</code>, <code>street_type</code></li>
+  <li><strong>routes</strong>: <code>route_number</code>, <code>name</code></li>
+  <li><strong>stops</strong>: <code>stop_number</code>, <code>name</code>, <code>direction</code>, <code>side</code>,
+    <code>latitude</code>, <code>longitude</code>, <code>has_shelter</code>, <code>has_bench</code>,
+    <code>departures_per_day</code>, and foreign keys <code>street_id</code> and <code>cross_street_id</code></li>
+  <li><strong>route_stops</strong>: join table with <code>route_id</code> and <code>stop_id</code></li>
+</ul>
+
+<h2 class="h5 mt-4">How the data is related</h2>
+<ul>
+  <li>A street has many stops, as the stop's street or as its cross street (one-to-many).</li>
+  <li>A route has many stops and a stop is served by many routes, through <code>route_stops</code> (many-to-many).</li>
+</ul>
+<p>
+  This lets you browse hierarchically: from a route to its stops, from a stop to its street,
+  and from a street to all the stops on it.
+</p>
+
+<h2 class="h5 mt-4">Stop quality score (in progress)</h2>
+<p>
+  The planned score rates each stop out of 100: up to 30 points for the number of routes serving it,
+  up to 40 for departures per day, 15 for a shelter and 5 for a bench. Shelter and bench data are
+  already loaded from the stop features endpoint. Departure frequency has not been loaded yet,
+  so stops show as "Not rated yet".
+</p>
+
+<h2 class="h5 mt-4">Database diagram</h2>
+<%= image_tag "erd.png", alt: "Entity relationship diagram of the streets, stops, routes and route_stops tables", class: "img-fluid" %>
