@@ -1,0 +1,57 @@
+<p><%= link_to "← All stops", stops_path %></p>
+<h1 class="h3"><%= @stop.name %></h1>
+<p class="text-muted">Stop #<%= @stop.stop_number %></p>
+
+<div class="row">
+  <div class="col-md-6">
+    <h2 class="h5">Details</h2>
+    <dl class="row">
+      <dt class="col-sm-4">Street</dt>
+      <dd class="col-sm-8"><%= link_to @stop.street.name, @stop.street %></dd>
+
+      <% if @stop.cross_street %>
+        <dt class="col-sm-4">Cross street</dt>
+        <dd class="col-sm-8"><%= link_to @stop.cross_street.name, @stop.cross_street %></dd>
+      <% end %>
+
+      <dt class="col-sm-4">Direction</dt>
+      <dd class="col-sm-8"><%= @stop.direction %> (<%= @stop.side %>)</dd>
+
+      <dt class="col-sm-4">Location</dt>
+      <dd class="col-sm-8"><%= @stop.latitude %>, <%= @stop.longitude %></dd>
+
+      <dt class="col-sm-4">Shelter</dt>
+      <dd class="col-sm-8">
+        <% if @stop.has_shelter.nil? %>
+          Unknown
+        <% elsif @stop.has_shelter %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      </dd>
+
+      <dt class="col-sm-4">Quality</dt>
+      <dd class="col-sm-8">
+        <% if @stop.quality_score %>
+          <%= @stop.quality_score %>/100 (<%= @stop.quality_label %>)
+        <% else %>
+          <%= @stop.quality_label %>
+        <% end %>
+      </dd>
+    </dl>
+  </div>
+
+  <div class="col-md-6">
+    <h2 class="h5">Routes serving this stop</h2>
+    <% if @stop.routes.any? %>
+      <ul class="list-group">
+        <% @stop.routes.each do |route| %>
+          <li class="list-group-item"><%= link_to route.name, route %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">No routes recorded.</p>
+    <% end %>
+  </div>
+</div>
