@@ -1,24 +1,14 @@
-# README
+# Transit Explorer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails app to browse Winnipeg bus stops, routes and streets.
+Data comes from the Winnipeg Transit API.
 
-Things you may want to cover:
+## Run it
+    bundle install
+    rails db:migrate
+    export WINNIPEG_TRANSIT_API_KEY="your-key"
+    rails db:seed
+    rails transit:features
+    rails s
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Then open http://localhost:3000. Get a free API key from the Winnipeg Transit developer site and do not commit it.
