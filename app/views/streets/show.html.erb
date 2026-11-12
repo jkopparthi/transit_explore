@@ -1,0 +1,22 @@
+<p><%= link_to "← All streets", streets_path %></p>
+<h1 class="h3"><%= @street.name %></h1>
+
+<h2 class="h5 mt-4">Stops on this street (<%= @stops.size %>)</h2>
+<% if @stops.empty? %>
+  <p class="text-muted">No stops are on this street, only at its intersections.</p>
+<% else %>
+  <ul class="list-group mb-4">
+    <% @stops.each do |stop| %>
+      <li class="list-group-item"><%= link_to stop.name, stop %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @cross_street_stops.any? %>
+  <h2 class="h5">Stops at this street as a cross street (<%= @cross_street_stops.size %>)</h2>
+  <ul class="list-group">
+    <% @cross_street_stops.each do |stop| %>
+      <li class="list-group-item"><%= link_to stop.name, stop %></li>
+    <% end %>
+  </ul>
+<% end %>

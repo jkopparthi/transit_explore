@@ -1,0 +1,19 @@
+<h1 class="h3 mb-3">Streets</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Street</th>
+      <th scope="col">Stops</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @streets.each do |street| %>
+      <tr>
+        <td><%= link_to street.name, street %></td>
+        <td><%= street.stops.size %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @streets %>
