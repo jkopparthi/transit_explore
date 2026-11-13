@@ -11,4 +11,4 @@ Data comes from the Winnipeg Transit API.
     rails transit:features
     rails s
 
-Then open http://localhost:3000. Get a free API key from the Winnipeg Transit developer site and do not commit it.
+Then open http://localhost:3000. Get a free API key from the Winnipeg Transit developer site.
